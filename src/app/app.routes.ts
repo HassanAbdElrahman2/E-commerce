@@ -90,7 +90,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'forget',
+    path: 'forgot',
     loadComponent: () =>
       import('../features/forgot/forgot.component')
         .then(m => m.ForgotComponent),

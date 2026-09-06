@@ -24,6 +24,7 @@
     "express": "^5.1.0",
     "flowbite": "^4.0.2",
     "rxjs": "~7.8.0",
+    "swiper": "^14.2.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
