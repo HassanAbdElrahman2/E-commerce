@@ -10,14 +10,17 @@
         <h1>Shopping Cart</h1>
       </div>
       <p class="text-gray-500 text-lg">
-        You have <span class="font-bold text-[#138D46]">2 items</span> in your cart
+        You have <span class="font-bold text-[#138D46]">{{cartDetails().products.length}} items</span> in your cart
       </p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
       <!-- !---------------------- Left side  !---------------------- -->
-      <div class="lg:col-span-8 flex flex-col gap-5">
+    
+
+        <div class="lg:col-span-8 flex flex-col gap-5">
         <!-- ?------------- item ?------------- -->
+@for (item of cartDetails().products; track item.product._id) {
         <div
           class="flex flex-col sm:flex-row items-center gap-6 border border-gray-200 rounded-2xl p-5 bg-white shadow-sm"
         >
@@ -27,30 +30,39 @@
               class="w-32 h-32 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 overflow-hidden"
             >
               <img
-                src="https://placehold.co/150x150/f9fafb/a1a1aa?text=Shawl"
-                alt="Woman Shawl"
+                [src]="item.product.imageCover"
+                [alt]="item.product.title"
                 class="object-cover mix-blend-multiply"
               />
             </div>
-            <span
-              class="bg-[#138D46] text-white text-2xs font-bold px-3 py-1 rounded-full flex items-center gap-1"
-            >
-              <i class="fa-solid fa-check"></i> In Stock
-            </span>
+           @if (item.product.quantity > 0) {
+  <span
+    class="bg-[#138D46] text-white text-2xs font-bold px-3 py-1 rounded-full flex items-center gap-1"
+  >
+    <i class="fa-solid fa-check"></i> In Stock
+  </span>
+}
+@else {
+  <span
+    class="bg-danger text-white text-2xs font-bold px-3 py-1 rounded-full flex items-center gap-1"
+  >
+    <i class="fa-solid fa-lock"></i> Out Stock
+  </span>
+}
           </div>
 
           <!-- product details  -->
           <div class="flex-1 w-full">
-            <h3 class="font-bold text-xl text-gray-900">Woman Shawl</h3>
+            <h3 class="font-bold text-xl text-gray-900">{{item.product.title}}</h3>
             <div class="flex items-center gap-3 text-sm text-gray-500 mt-2">
               <span class="bg-green-50 text-[#138D46] px-3 py-1 rounded-full text-xs font-medium"
-                >Women's Fashion</span
+                >{{item.product.category.name}}</span
               >
               <span class="text-gray-300">•</span>
-              <span class="text-xs">SKU: 5CA0AD</span>
+              <span class="text-xs">SKU: {{item.product.id.slice(0,6)}}</span>
             </div>
             <div class="mt-4 font-bold text-[#138D46] text-xl">
-              149 EGP <span class="text-xs text-gray-400 font-normal">per unit</span>
+              {{item.price}} EGP <span class="text-xs text-gray-400 font-normal">per unit</span>
             </div>
           </div>
 
@@ -59,15 +71,15 @@
             class="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto mt-4 sm:mt-0"
           >
             <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden h-10">
-              <button
+              <button (click)="update(item.product._id,item.count-1)"
                 class="px-3 h-full text-gray-500 hover:bg-gray-100 transition-colors focus:outline-hidden"
               >
                 <i class="fa-solid fa-minus text-xs"></i>
               </button>
 
-              <span class="px-3 font-bold text-gray-900 min-w-10 text-center">2</span>
+              <span class="px-3 font-bold text-gray-900 min-w-10 text-center">{{item.count}}</span>
 
-              <button
+              <button (click)="update(item.product._id,item.count+1)"
                 class="px-3 h-full bg-[#138D46] text-white hover:bg-green-700 transition-colors focus:outline-hidden"
               >
                 <i class="fa-solid fa-plus text-xs"></i>
@@ -77,33 +89,55 @@
             <div class="text-right min-w-16">
               <div class="text-xs text-gray-400 mb-0.5">Total</div>
               <div class="font-bold text-xl text-gray-900">
-                298 <span class="text-xs font-normal">EGP</span>
+                {{item.price*item.count}} <span class="text-xs font-normal">EGP</span>
               </div>
             </div>
 
-            <button
+            <button (click)="removeProductFromCart(item.product.id)"
               class="w-10 h-10 flex items-center justify-center bg-red-50 text-red-500 rounded-lg hover:bg-red-100 transition-colors focus:outline-hidden"
             >
               <i class="fa-regular fa-trash-can"></i>
             </button>
           </div>
         </div>
+      }    @empty {
+      	<div class="text-center px-4 max-w-md mx-auto">
+  <div class="mx-auto flex h-40 w-40 items-center justify-center rounded-full bg-gray-50 mb-8">
+    <i class="fa-solid fa-box-open text-6xl text-gray-300"></i>
+  </div>
 
+  <h2 class="text-3xl font-bold text-gray-900 mb-4 tracking-tight">Your cart is empty</h2>
+
+  <p class="text-gray-500 mb-10 text-lg leading-relaxed">
+    Looks like you haven't added anything to your cart yet. <br class="hidden sm:block" />
+    Start exploring our products!
+  </p>
+
+  <button routerLink="/shop"
+    class="inline-flex items-center justify-center gap-3 rounded-full bg-emerald-500 px-8 py-4 text-base font-semibold text-white transition-all duration-200 hover:bg-emerald-600 hover:-translate-y-0.5 focus:ring-4 focus:ring-emerald-100 focus:outline-hidden shadow-sm hover:shadow-md cursor-pointer"
+  >
+    Start Shopping
+    <i class="fa-solid fa-arrow-right"></i>
+  </button>
+</div>
+    }
         <!-- Continue Shopping & clear all  -->
 
         <div class="flex items-center justify-between pt-4 mt-2">
-          <button
+          <button routerLink="/shop"
             class="text-[#138D46] font-medium hover:underline flex items-center gap-2 focus:outline-hidden"
           >
             <i class="fa-solid fa-arrow-left-long"></i> Continue Shopping
           </button>
-          <button
+          <button (click)="clearCart()"
             class="text-gray-400 hover:text-red-500 font-medium flex items-center gap-2 transition-colors focus:outline-hidden"
           >
             <i class="fa-solid fa-trash-can text-sm"></i> Clear all items
           </button>
         </div>
+    
       </div>
+
 
       <!-- !---------------------- Right side  !---------------------- -->
       <div class="lg:col-span-4">
@@ -114,7 +148,7 @@
             <div class="flex items-center gap-3 font-bold text-xl mb-1">
               <i class="fa-solid fa-lock text-green-200"></i> Order Summary
             </div>
-            <div class="text-sm text-green-100 font-medium">2 items in your cart</div>
+            <div class="text-sm text-green-100 font-medium">{{cartDetails().products.length}} items in your cart</div>
           </div>
 
           <div class="p-6">
@@ -142,7 +176,7 @@
             <div class="flex justify-between items-end border-t border-gray-100 pt-5 mb-6">
               <span class="font-bold text-gray-900 text-lg">Total</span>
               <span class="font-black text-3xl text-gray-900">
-                596 <span class="text-sm font-semibold text-gray-500">EGP</span>
+                {{cartDetails().totalCartPrice}} <span class="text-sm font-semibold text-gray-500">EGP</span>
               </span>
             </div>
 
@@ -179,6 +213,8 @@
           </button>
         </div>
       </div>
+    
+
     </div>
   </div>
 </section>

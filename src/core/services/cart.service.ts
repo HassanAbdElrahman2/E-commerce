@@ -17,4 +17,16 @@ export class CartService {
   getLoggedUserCart():Observable<any>{
     return this.httpClient.get(environment.baseUrl+'/api/v2/cart');
   }
+  removeProduct(productId:string):Observable<any>{
+    return this.httpClient.delete(environment.baseUrl+`/api/v2/cart/${productId}`);
+  }
+  clearUserCart():Observable<any>{
+    return this.httpClient.delete(environment.baseUrl+'/api/v2/cart');
+  }
+  
+    updateCartProductQuantity(productId:string,count:number):Observable<any>{
+    return this.httpClient.put(environment.baseUrl+`/api/v2/cart/${productId}`,{
+      "count": count
+    });
+  }
 }
