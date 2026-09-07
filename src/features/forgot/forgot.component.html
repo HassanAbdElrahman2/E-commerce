@@ -146,7 +146,7 @@
         </form>
 
         <div class="mt-6 text-center">
-          <a
+          <a (click)="BacktoSignIn()"
             class="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors"
           >
             <i class="fa-solid fa-arrow-left-long mr-2"></i> Back to Sign In
@@ -197,7 +197,7 @@
 
           <div class="text-center text-sm text-slate-500">
             Didn't receive the code?
-            <button
+            <button (click)="submitEmail($event)"
               type="button"
               class="font-semibold text-emerald-600 hover:text-emerald-700 hover:underline underline-offset-4 transition-all focus:outline-none"
             >
@@ -213,7 +213,7 @@
           </button>
 
           <div class="text-center pt-2">
-            <a
+            <a (click)="ChangeEmail()"
               class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors focus:outline-none"
             >
               <i class="fa-solid fa-arrow-left mr-2"></i> Change email address

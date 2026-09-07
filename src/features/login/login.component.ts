@@ -10,6 +10,7 @@ import { Router, RouterLinkActive, RouterLink } from '@angular/router';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
+  
   private readonly authService=inject(AuthService);
   private readonly fb=inject(FormBuilder);
     private readonly router=inject(Router);
@@ -26,7 +27,7 @@ if(this.formLogin?.valid){
       localStorage.setItem("freshToken",res.token);
        localStorage.setItem("user",JSON.stringify(res.user));
       this.router.navigate(['/']);
-
+    this.authService.isLogged.set(true);
     }
     }
   })
@@ -34,5 +35,9 @@ if(this.formLogin?.valid){
   this.formLogin.markAllAsTouched();
 }
 
+}
+CreateAccount():void{
+  this.formLogin.reset();
+  this.router.navigate(['/register']);
 }
 }

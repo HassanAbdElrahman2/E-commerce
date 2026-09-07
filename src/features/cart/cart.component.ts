@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+
+import { CartService } from '../../core/services/cart.service';
 
 @Component({
   selector: 'app-cart',
@@ -6,4 +8,14 @@ import { Component } from '@angular/core';
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
 })
-export class CartComponent {}
+export class CartComponent implements OnInit {
+  ngOnInit(): void {
+    this.getCartData();
+  }
+  private readonly cartService=inject(CartService);
+  getCartData():void{
+this.cartService.getLoggedUserCart().subscribe((res)=>{
+console.log(res.data)
+})
+  }
+}

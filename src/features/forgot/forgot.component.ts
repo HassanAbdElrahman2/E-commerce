@@ -65,4 +65,12 @@ export class ForgotComponent {
    })
   }
 }
+ChangeEmail():void{
+  this.email.reset();
+  this.step.set(1);
+}
+BacktoSignIn():void{
+  this.email.reset();
+  this.router.navigate(['/login']);
+}
 }

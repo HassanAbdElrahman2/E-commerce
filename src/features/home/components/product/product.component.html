@@ -80,7 +80,7 @@
                 <span class="text-lg font-medium text-slate-900"> {{product.price}}  EGP</span>
               </div>
 
-              <button
+              <button (click)="addProductToCart(product._id)"
                 class="w-10 h-10 bg-emerald-600 text-white rounded-lg flex items-center justify-center hover:bg-emerald-700 transition-colors shadow-sm active:scale-95"
               >
                 <i class="fas fa-plus"></i>
