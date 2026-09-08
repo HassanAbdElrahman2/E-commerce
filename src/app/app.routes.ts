@@ -62,7 +62,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'checkout',
+    path: 'checkout/:id',
     loadComponent: () =>
       import('../features/checkout/checkout.component')
         .then(m => m.CheckoutComponent),
@@ -71,7 +71,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'orders',
+    path: 'allorders',
     loadComponent: () =>
       import('../features/orders/orders.component')
         .then(m => m.OrdersComponent),

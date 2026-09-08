@@ -186,7 +186,7 @@
               <i class="fa-solid fa-tag"></i> Apply Promo Code
             </button> -->
 
-            <button
+            <button [routerLink]="['/checkout',cartDetails()._id]",
               class="w-full py-4 bg-[#138D46] text-white font-bold rounded-xl hover:bg-green-700 transition-colors shadow-md hover:shadow-lg flex items-center justify-center gap-2 focus:outline-hidden hover:-translate-y-0.5 transform duration-200"
             >
               <i class="fa-solid fa-lock"></i> Secure Checkout

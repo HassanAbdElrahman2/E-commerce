@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
 })
 export class CartService {
   private readonly httpClient=inject(HttpClient);
-
+  cartCount= signal<number>(0);
   addProductToCart(proId:string):Observable<any>{
     return this.httpClient.post(environment.baseUrl+'/api/v2/cart',{
   "productId": proId
@@ -29,4 +29,11 @@ export class CartService {
       "count": count
     });
   }
+  createCashOrder(cartId:string,data:object):Observable<any>{
+    return this.httpClient.post(environment.baseUrl+`/api/v1/orders/${cartId}`,data)
+  }
+    createVisaOrder(cartId:string,data:object):Observable<any>{
+    return this.httpClient.post(environment.baseUrl+`/api/v1/orders/checkout-session/${cartId}?url=${environment.url}`,data)
+  }
 }
+

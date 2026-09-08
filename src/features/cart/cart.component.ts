@@ -1,8 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 
 import { CartService } from '../../core/services/cart.service';
 import { Cart } from '../../core/models/cart.interface';
 import { RouterLink } from "@angular/router";
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-cart',
@@ -11,6 +12,7 @@ import { RouterLink } from "@angular/router";
   styleUrl: './cart.component.css',
 })
 export class CartComponent implements OnInit {
+  private readonly id=inject(PLATFORM_ID);
  private readonly emptyCart: Cart = {
   _id: '',
   cartOwner: '',
@@ -22,7 +24,9 @@ export class CartComponent implements OnInit {
 };
   cartDetails= signal<Cart>(this.emptyCart);
   ngOnInit(): void {
+    if(isPlatformBrowser(this.id)){
     this.getCartData();
+  }
   }
   private readonly cartService=inject(CartService);
   getCartData():void{
@@ -34,14 +38,15 @@ this.cartDetails.set(res.data);
 this.cartService.removeProduct(productId).subscribe({
   next:(res)=>{
   this.cartDetails.set(res.data);
+  this.cartService.cartCount.set(res.numOfCartItems);
   }
 })
  }
  clearCart():void{
   this.cartService.clearUserCart().subscribe({
     next:(res)=>{
-      console.log(res.data)
       this.cartDetails.set(res.data);
+      this.cartService.cartCount.set(res.numOfCartItems);
     }
   })
  }
