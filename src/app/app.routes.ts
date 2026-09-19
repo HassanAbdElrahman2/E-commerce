@@ -34,6 +34,13 @@ export const routes: Routes = [
         .then(m => m.CategoriesComponent),
     title: 'Categories Page'
   },
+   {
+    path: 'categories/:subcategory',
+    loadComponent: () =>
+      import('../features/sub-category/sub-category.component')
+        .then(m => m.SubCategoryComponent),
+    title: 'SubCategories Page'
+  },
 
   {
     path: 'cart',

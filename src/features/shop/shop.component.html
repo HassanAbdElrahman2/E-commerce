@@ -1,13 +1,121 @@
+    <section
+  class="min-h-[240px] bg-gradient-to-r from-green-600 to-green-400 px-5 md:px-20 py-10 text-white"
+>
+  <!-- Breadcrumb -->
+  <div class="flex items-center gap-4 text-base mb-8">
+    @if(categoryData()){
+      <span>Home</span>
+    <span class="text-white/60">/</span>
+    <span class="text-white/60">Products</span>
+     <span class="text-white/60">/</span>
+      <span class=" font-semibold">{{categoryData()?.name}}</span>
+
+    }@else if (brandData()) {
+          <span>Home</span>
+    <span class="text-white/60">/</span>
+    <span class="text-white/60">Brands</span>
+     <span class="text-white/60">/</span>
+      <span class=" font-semibold">{{brandData()?.name}}</span>
+    }
+    @else {
+<span>Home</span>
+
+    <span class="text-white/60">/</span>
+
+    <span class="font-semibold">Products</span>
+    }
+    
+  </div>
+
+  <!-- Title -->
+  <div class="flex items-center gap-6">
+    
+    <!-- Icon -->
+  
+    <div
+      class="flex h-20 w-20 shrink-0 items-center justify-center rounded-[20px]
+             bg-white/20 shadow-lg backdrop-blur-sm"
+    >
+       @if(categoryData()){
+        <div class="p-4 rounded-2">
+          <div class="h-full w-full">
+            <img [src]="categoryData()?.image" [alt]="categoryData()?.name">    
+          </div>
+          
+        </div>
+
+     }@else if(brandData()){
+  <div class="p-4 rounded-2">
+          <div class="h-full w-full">
+            <img [src]="brandData()?.image" [alt]="brandData()?.name">    
+          </div>
+          
+        </div>
+     }
+     @else {
+      <i class="fa-solid fa-box-open text-4xl"></i>
+     }
+      
+    </div>
+
+    <!-- Text -->
+    <div>
+      <h1 class="text-3xl md:text-4xl font-bold">
+          @if(categoryData()?._id){
+          {{categoryData()?.name}}
+     }@else if(brandData()){
+      {{brandData()?.name}}
+     }
+     @else {
+        All Products
+     }
+      
+     
+      </h1>
+
+      <p class="mt-2 text-lg md:text-xl">
+          @if(categoryData()){
+         Browse products in  {{categoryData()?.name}}
+     }@else if(brandData()){
+        Shop {{brandData()?.name}} products
+     }
+     @else {
+        Explore our complete product collection
+     }
+        
+      </p>
+    </div>
+
+  </div>
+</section>
  <section class="p-10">
+
 <div class="container">
+  @if (ProductList().length > 0) {
  <div class="mt-5  grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4  ">
    @for (product of ProductList()| paginate: { id: 'foo',
                                                       itemsPerPage: pageSize(),
                                                       currentPage: currentPage(),
                                                       totalItems: total() }; track product._id) {
    <app-card [product]="product"></app-card>
-      }      
+      }
+    
    </div>
+  }    @else {
+<div class="flex items-center justify-center ">
+        	<div class="text-center px-4 max-w-md mx-auto">
+  <div class="mx-auto flex h-40 w-40 items-center justify-center rounded-full bg-gray-50 mb-8">
+    <i class="fa-solid fa-box-open text-6xl text-gray-300"></i>
+  </div>
+
+  <h2 class="text-3xl font-bold text-gray-900 mb-4 tracking-tight">No Products For this Category</h2>
+
+  <p class="text-gray-500 mb-10 text-lg leading-relaxed">
+   You can brose anther catagories
+  </p>
+</div>
+</div>
+    } 
    <div class="flex items-center justify-center my-4">
    <pagination-controls  id="foo"
                       (pageChange)="pageChanged($event)"
@@ -24,4 +132,5 @@
    </div>
 
 </div>
+
     </section>

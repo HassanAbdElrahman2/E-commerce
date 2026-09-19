@@ -13,4 +13,14 @@ export class CategoriesService {
   getAllCategories():Observable<any>{
     return this.httpClient.get(environment.baseUrl+'/api/v1/categories');
   }
-}
+   getAllSubCategories(categoryId:string):Observable<any>{
+    return this.httpClient.get(environment.baseUrl+`/api/v1/categories/${categoryId}/subcategories`);
+  }
+
+  getSpecificCategory(categoryId:string):Observable<any>{
+     return this.httpClient.get(environment.baseUrl+`/api/v1/categories/${categoryId}`);
+  }
+       getSpecificBrand(brandId:string):Observable<any>{
+     return this.httpClient.get(environment.baseUrl+`/api/v1/brands/${brandId}`);
+  }
+     }
