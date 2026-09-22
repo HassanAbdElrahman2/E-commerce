@@ -1,0 +1,445 @@
+<div class="container mx-auto px-4 py-8">
+
+  <!-- FILTER BUTTON -->
+  <button
+    type="button"
+    class="lg:hidden mb-6 flex items-center gap-2
+           border border-gray-300
+           rounded-lg
+           px-5 py-3">
+
+    <i class="fa-solid fa-filter"></i>
+    <span>Filter</span>
+
+  </button>
+
+
+  <!-- MAIN -->
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+
+
+    <!-- SIDEBAR -->
+    <aside class="hidden lg:block lg:col-span-1">
+
+      <!-- THIS IS THE STICKY ELEMENT -->
+      <div class="sticky top-24">
+
+        <div class="border border-gray-200 rounded-xl p-5 bg-white">
+
+          <!-- CATEGORIES -->
+          <div class="border-b border-gray-200 pb-6 mb-6">
+
+            <h2 class="text-xl font-bold mb-5">
+              Categories
+            </h2>
+
+            <div class="max-h-64 overflow-y-auto space-y-4">
+
+              @for (category of categoryList(); track category._id) {
+
+                <label class="flex items-center gap-3 cursor-pointer">
+
+                  <input
+                  [checked]="searchCategorieslist().includes(category._id)"
+                  (change)="createSearchQuery($event,category._id,filterType.Category)"
+                    type="checkbox"
+                    class="w-5 h-5 text-green-600">
+
+                  <span>
+                    {{ category.name }}
+                  </span>
+
+                </label>
+
+              }
+
+            </div>
+
+          </div>
+
+
+          <!-- PRICE -->
+          <div class="border-b border-gray-200 pb-6 mb-6">
+
+            <h2 class="text-xl font-bold mb-5">
+              Price Range
+            </h2>
+
+            <div class="grid grid-cols-2 gap-3">
+
+              <input
+                type="number"
+                placeholder="Min"
+                   (change)="createSearchQuery(
+                            $event,
+                            'min',
+                            filterType.Price
+                        )"
+                class="w-full border border-gray-300 rounded-xl px-3 py-2">
+
+              <input
+                type="number"
+                placeholder="Max"
+                 (change)="createSearchQuery(
+                            $event,
+                            'max',
+                            filterType.Price
+                        )"
+                class="w-full border border-gray-300 rounded-xl px-3 py-2">
+
+            </div>
+
+           
+
+          </div>
+
+
+          <!-- BRANDS -->
+          <div>
+
+            <h2 class="text-xl font-bold mb-5">
+              Brands
+            </h2>
+
+            <div class="max-h-64 overflow-y-auto space-y-4">
+
+              @for (brand of BrandsList(); track brand._id) {
+
+                <label class="flex items-center gap-3 cursor-pointer">
+
+                  <input
+                    [checked]="searchBrandslist().includes(brand._id)"
+                  (change)="createSearchQuery($event,brand._id,filterType.Brand)"
+                    type="checkbox"
+                    class="w-5 h-5 text-green-600">
+
+                  <span>
+                    {{ brand.name }}
+                  </span>
+
+                </label>
+
+              }
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+
+<!-- PRODUCTS -->
+<main class="lg:col-span-4">
+<div class="flex justify-between items-center mb-6">
+
+  <h2 class="text-2xl font-bold">
+    Products
+  </h2>
+
+  <button
+    type="button"
+    (click)="clearFilters()"
+    class="flex items-center gap-2
+           border border-gray-300
+           rounded-xl px-4 py-2
+           hover:bg-gray-50 transition"
+  >
+    <i class="fa-solid fa-filter-circle-xmark"></i>
+    Clear Filters
+  </button>
+
+</div>
+  <!-- PRODUCTS GRID -->
+  <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-5">
+
+    @for (
+      product of ProductList()
+      | paginate: {
+          id: 'foo',
+          itemsPerPage: pageSize(),
+          currentPage: currentPage(),
+          totalItems: total()
+        };
+      track product._id
+    ) {
+
+      <app-card [product]="product"></app-card>
+
+    } @empty {
+
+      <div class="col-span-full flex items-center justify-center py-16">
+
+        <div class="text-center px-4 max-w-md">
+
+          <div
+            class="mx-auto flex h-40 w-40 items-center justify-center
+                   rounded-full bg-gray-50 mb-8"
+          >
+            <i class="fa-solid fa-box-open text-6xl text-gray-300"></i>
+          </div>
+
+          <h2 class="text-3xl font-bold text-gray-900 mb-4 tracking-tight">
+            No Products 
+          </h2>
+
+          <p class="text-gray-500 text-lg leading-relaxed">
+            You can browse
+          </p>
+<button
+  type="button"
+  (click)="clearFilters()"
+  class="inline-flex items-center gap-2
+         rounded-xl bg-green-600 px-6 py-3
+         text-white font-medium
+         hover:bg-green-700
+         transition"
+>
+  <i class="fa-solid fa-filter-circle-xmark"></i>
+  Clear Filters
+</button>
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+
+  <!-- PAGINATION -->
+  @if (ProductList().length > 0) {
+
+    <div class="flex justify-center items-center my-8 w-full">
+
+      <pagination-controls
+        id="foo"
+        (pageChange)="pageChanged($event)"
+        [maxSize]="9"
+        [directionLinks]="true"
+        [autoHide]="true"
+        [responsive]="true"
+        previousLabel="Previous"
+        nextLabel="Next"
+        screenReaderPaginationLabel="Pagination"
+        screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page"
+      >
+      </pagination-controls>
+
+    </div>
+
+  }
+
+</main>
+
+  </div>
+
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- MOBILE FLOWBITE DRAWER -->
+<!-- ===================================== -->
+
+<div
+  id="filter-drawer"
+  class="fixed top-0 left-0
+         z-50
+         h-screen
+         w-[85%]
+         max-w-[350px]
+         overflow-y-auto
+         bg-white
+         p-5
+         shadow-xl
+         transition-transform
+         -translate-x-full"
+  tabindex="-1"
+  aria-labelledby="filter-drawer-label">
+
+
+  <!-- Drawer Header -->
+
+  <div
+    class="flex items-center
+           justify-between
+           mb-6">
+
+    <h5
+      id="filter-drawer-label"
+      class="text-xl font-bold">
+
+      Filters
+
+    </h5>
+
+
+    <button
+      type="button"
+      data-drawer-hide="filter-drawer"
+      aria-controls="filter-drawer"
+      class="w-9 h-9
+             flex items-center
+             justify-center
+             rounded-lg
+             text-gray-500
+             hover:bg-gray-100">
+
+      <i class="fa-solid fa-xmark text-xl"></i>
+
+    </button>
+
+  </div>
+
+
+
+  <!-- ================================= -->
+  <!-- DRAWER CATEGORIES -->
+  <!-- ================================= -->
+
+  <div class="border-b border-gray-200 pb-6 mb-6">
+
+    <h2 class="text-xl font-bold mb-5">
+      Categories
+    </h2>
+
+
+    <div
+      class="max-h-64
+             overflow-y-auto
+             space-y-4
+             pr-2">
+
+      @for (category of categoryList(); track category._id) {
+
+        <label
+          class="flex items-center gap-4 cursor-pointer">
+
+          <input
+          [checked]="searchCategorieslist().includes(category._id)"
+                  (change)="createSearchQuery($event,category._id,filterType.Category)"
+            type="checkbox"
+            class="w-5 h-5 rounded
+                   border-gray-300
+                   text-green-600">
+
+          <span class="text-gray-700">
+            {{ category.name }}
+          </span>
+
+        </label>
+
+      }
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ================================= -->
+  <!-- DRAWER PRICE -->
+  <!-- ================================= -->
+
+  <div class="border-b border-gray-200 pb-6 mb-6">
+
+    <h2 class="text-xl font-bold mb-5">
+      Price Range
+    </h2>
+
+
+    <div class="grid grid-cols-2 gap-4">
+
+      <div>
+
+        <label
+          class="block text-sm text-gray-600 mb-2">
+
+          Min (EGP)
+
+        </label>
+
+        <input
+          type="number"
+          placeholder="0"
+          class="w-full border
+                 border-gray-300
+                 rounded-xl
+                 px-4 py-3">
+
+      </div>
+
+
+      <div>
+
+        <label
+          class="block text-sm text-gray-600 mb-2">
+
+          Max (EGP)
+
+        </label>
+
+        <input
+          type="number"
+          placeholder="No limit"
+          class="w-full border
+                 border-gray-300
+                 rounded-xl
+                 px-4 py-3">
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ================================= -->
+  <!-- DRAWER BRANDS -->
+  <!-- ================================= -->
+
+  <div>
+
+    <h2 class="text-xl font-bold mb-5">
+      Brands
+    </h2>
+
+
+    <div
+      class="max-h-64
+             overflow-y-auto
+             space-y-4
+             pr-2">
+
+      @for (brand of BrandsList(); track brand._id) {
+
+        <label
+          class="flex items-center gap-4 cursor-pointer">
+
+          <input
+            [checked]="searchBrandslist().includes(brand._id)"
+                  (change)="createSearchQuery($event,brand._id,filterType.Brand)"
+            type="checkbox"
+            class="w-5 h-5 rounded
+                   border-gray-300
+                   text-green-600">
+
+          <span class="text-gray-700">
+            {{ brand.name }}
+          </span>
+
+        </label>
+
+      }
+
+    </div>
+
+  </div>
+
+</div>

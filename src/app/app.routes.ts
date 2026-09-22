@@ -42,6 +42,13 @@ export const routes: Routes = [
     title: 'SubCategories Page'
   },
 
+    {
+    path: 'search',
+    loadComponent: () =>
+      import('../features/search/search.component')
+        .then(m => m.SearchComponent),
+    title: 'Search Page'
+  },
   {
     path: 'cart',
     loadComponent: () =>

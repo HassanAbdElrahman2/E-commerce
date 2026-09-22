@@ -28,6 +28,37 @@ httpPrams = httpPrams.set('brand', prams.brand);
     
     return this.httpClient.get(environment.baseUrl+`/api/v1/products?page=${pageNum}`,{params:httpPrams});
   }
+  getSearchProducts(
+  pageNum: number = 1,
+  params?: {
+    category?: string[];
+    brand?: string[];
+  }
+): Observable<any> {
+
+  let httpParams = new HttpParams();
+
+  if (params?.category?.length) {
+    params.category.forEach(id => {
+      httpParams = httpParams.append('category', id);
+    });
+  }
+
+  if (params?.brand?.length) {
+    params.brand.forEach(id => {
+      httpParams = httpParams.append('brand', id);
+    });
+  }
+
+
+  return this.httpClient.get(
+    environment.baseUrl + `/api/v1/products?page=${pageNum}`,
+    {
+      params: httpParams
+    }
+  );
+}
+
   getSpecificProduct(productId:string):Observable<any>{
     return this.httpClient.get(environment.baseUrl+`/api/v1/products/${productId}`);
   }

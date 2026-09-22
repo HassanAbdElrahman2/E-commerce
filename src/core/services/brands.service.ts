@@ -9,7 +9,11 @@ import { environment } from '../../environments/environment';
 export class BrandsService {
   private readonly httpClient=inject(HttpClient);
 
-  getAllBrands(pageNum:number=1):Observable<any>{
+  getAllBrands(pageNum?:number|undefined):Observable<any>{
+    if(pageNum){
     return this.httpClient.get(environment.baseUrl+`/api/v1/brands?page=${pageNum}`);
+  }else{
+    return this.httpClient.get(environment.baseUrl+`/api/v1/brands`);
+  }
   }
 }
